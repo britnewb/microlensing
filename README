@@ -1,0 +1,19 @@
+Microlensing program
+
+This is a program written by Britta Hansen (now Newby) while working at the Canadian Institute for Theoretical Astrophysics in Toronto, under the
+supervision of Dr. Kelsey Hoffman. 
+
+This program has various C function which take input parameters about a transiting stellar system. The parameters can include
+i = inclination
+a = semi-major axis
+e = ellipticity
+m = microlensing presence
+l = limb darkening presence
+
+Once the parameters are given, the program will compute the hypothetical light curve of the transit from our viewing angle. The result is printed to 
+a data file ending in .dat. 
+le 
+
+To compile use gcc
+
+To analyze the result and compare to Kepler data, use Chi-squared functions. 
