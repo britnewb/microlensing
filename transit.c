@@ -1,11 +1,15 @@
 /**************NEW PROGRAM TO NUMERICALLY INTEGRATE FLUX***************/
 //Just transit, no limb darkening, no microlensing
 //store data in transit.dat
+//compile with gcc -lm -o transit transit.c
+//run as ./transit -h for the help information
+
+
 
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include "const.h"
+#include "const.h" //defines pi, G, au, m_sun, SQR(x)
 #include <stdlib.h>
 
 float AREA(float R_a,float R_b, float d)
@@ -20,10 +24,10 @@ float AREA(float R_a,float R_b, float d)
 
 int main(int argc, char *argv[])
 {
-	float A,Z,L_a,L_b;
+	float A,Z,L_a,L_b; // A? Z? Luminosity of the primary and secondary
 	float M_a,M_b;//mass of the primary and secondary
 	float phi,theta;//zenith and polar angles respectively
-	float psi;//angle of rotation in it's own circular orbit.
+	float psi;//angle of rotation in its own circular orbit.
 	float mind,maxd;//minimum value of z == d =0
 	float d;//projected distance between the two centres
 	float R_a,R_b;//Primary and secondary radii
@@ -39,14 +43,15 @@ int main(int argc, char *argv[])
 	int ti;//time at intersection
 /**************************
 Default setting:*/
-v = 0;
-w = 0;
-Flux = 0;
-R_b = 0;
-R_a = 0;
+v = 1; //actual rotational velocity in m/s?
+w = 1; //observed rotational velocity
+Flux = 1;
+R_b = 1;
+R_a = 1;
 i = 0;
 ttime = 10000;
 psi=pi;
+//should I set a default value for L_a and L_b?
 /***********************/
 
 	for (j = 0; j<argc; j++)
@@ -101,7 +106,7 @@ psi=pi;
 			break;
    				
 			case 'h': // HELP! 
-			printf("Requires r,a,b,t,l,m,v,i\n");
+			printf("Requires r,a,b,t,l,m,v,i\n"); //Can I make one large printf? 
 			printf("Must be in solar radii, solar luminosities, solar masses, separations in AU, velocity in m/s\n");
   			fprintf(stderr, "Quick Helps: \n");
    			fprintf(stderr, "\n");
@@ -115,46 +120,46 @@ psi=pi;
 			fprintf(stderr, " -m luminosity of the secondary in l_sun\n");
 			fprintf(stderr, " -v actual rotational velocity in m/s\n");
 			fprintf(stderr, " -i inclination in radians\n");
-			fprintf(stderr, " -f distance from source to us in AU\n");
+	//		fprintf(stderr, " -f distance from source to us in AU\n"); //Not implemented yet
    			fprintf(stderr, "\n");
    			break;
 		}
 	}
 
-/******************UNIT CONVERSION******************************************************/
+/******************UNIT CONVERSION TO SOLAR UNITS******************************************************/
 R_a = R_a*r_sun;
 R_b = R_b*r_sun;
 M_a = M_a*m_sun;
 M_b = M_b*m_sun;
-r = au*r;
+r = au*r; //this is a recursive definition
 L_a = L_a*l_sun;
 L_b = L_b*l_sun;
 
 FILE *outfile;
 char *mode= "w";
-outfile = fopen("transit.dat",mode);
+outfile = fopen("transit.dat",mode); //Prepare the file transit.dat for writing output
 if (outfile ==NULL)
 {
 	fprintf(stderr,"Can't open output.txt\n");
 	exit (1);
 }
-	A_a = pi*R_a*R_a;
+	A_a = pi*R_a*R_a; //Calculate the area of a from the radius
 	A_b = pi*R_b*R_b;
 	const float firstz = z;//first value given of d.
 	const float firstFlux = L_a/A_a;// + L_b/A_b;
 
-psi = mint*v/r + pi;
+psi = mint*v/r + pi; //Figure out the internal angle of the orbit given the start time & speed
 printf("psi  = %f\n",psi);
-if((psi>=pi)&&(psi<3*pi/2))
+if((psi>=pi)&&(psi<3*pi/2))//I think Phase 1 is when the transiting object is approaching the transit
 	{Phase = 1;}
-if((psi>=pi*3/2)&&(psi<2*pi))
+if((psi>=pi*3/2)&&(psi<2*pi)) //Phase 2 would be while it's leaving transit
 	{Phase = 2;}
 if((psi>=pi*2)&&(psi<5*pi/2))
 	{Phase = 3;}
 if((psi>=5*pi/2)&&(psi<3*pi))
 	{Phase = 4;}
-printf("Intersection at %f seconds\n",pi*r/(v*2));
-printf("Intersection is imminent when i = %f\n",asin((R_b + R_a)/r));
+printf("Intersection at %f seconds\n",pi*r/(v*2)); //What's the difference between these two?
+printf("Intersection is imminent when i = %f\n",asin((R_b + R_a)/r)); 
 ti = pi*r/(2*v);
 	for(t=mint;t<ttime;t++)
 	{	
@@ -172,7 +177,7 @@ ti = pi*r/(2*v);
 			}
 			if ((R_a + R_b > d)&&((d+R_b)>=R_a))//intersecting
 			{
-				A = AREA(R_a,R_b,d);
+				A = AREA(R_a,R_b,d); // Calculate the area of the current intersection
 				Z = (A_a - A)/(A_a*A_a);
 				Flux = L_a*Z/firstFlux;
 				//Flux = (L_b/A_b + L_a*Z)/firstFlux;

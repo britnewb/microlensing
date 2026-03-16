@@ -14,6 +14,17 @@ Once the parameters are given, the program will compute the hypothetical light c
 a data file ending in .dat. 
 le 
 
-To compile use gcc
+The file structure is as folllows:
+transit.c is the base program without limb darkening
+
+To compile use gcc -lm -o transit transit.c
+
+To run the program try
+./transit -h	//lists help functions
+./transit -r 0.1 -t 13500 -c 1 -d 1 -l 1 -m 1 -v 10000 -a 1 -b 0.5	// good starting functions
+
+The results are output in transit.dat
+To view the results in gnuplot, set xrange, set yrange, then run
+plot "transit.dat" using 1:2 with linespoints
 
 To analyze the result and compare to Kepler data, use Chi-squared functions. 
