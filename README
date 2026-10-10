@@ -1,9 +1,12 @@
 Microlensing program
 
-This is a program written by Britta Hansen (now Newby) while working at the Canadian Institute for Theoretical Astrophysics in Toronto, under the
+This is a program written by Britta Hansen while working at the Canadian Institute for Theoretical Astrophysics in Toronto, under the
 supervision of Dr. Kelsey Hoffman. 
 
-This program has various C function which take input parameters about a transiting stellar system. The parameters can include
+TRANSIT
+
+transit.c is a program which models a stellar transit with given input parameters
+
 i = inclination
 a = semi-major axis
 e = ellipticity
@@ -12,7 +15,6 @@ l = limb darkening presence
 
 Once the parameters are given, the program will compute the hypothetical light curve of the transit from our viewing angle. The result is printed to 
 a data file ending in .dat. 
-le 
 
 The file structure is as folllows:
 transit.c is the base program without limb darkening
@@ -26,5 +28,12 @@ To run the program try
 The results are output in transit.dat
 To view the results in gnuplot, set xrange, set yrange, then run
 plot "transit.dat" using 1:2 with linespoints
+
+DATAGENERATOR
+
+datagenerator.c creates a test data file to use as formatted input for the other files. It can be compiled with 
+gcc -lm -o datagenerator datagenerator.c
+
+The output is stored in 'generated.dat'
 
 To analyze the result and compare to Kepler data, use Chi-squared functions. 
