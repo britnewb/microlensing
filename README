@@ -1,7 +1,10 @@
 Microlensing program
 
 This is a program written by Britta Hansen while working at the Canadian Institute for Theoretical Astrophysics in Toronto, under the
-supervision of Dr. Kelsey Hoffman. 
+supervision of Dr. Kelsey Hoffman in 2012.
+
+This program numerically integrates the microlensing signal across a transiting source disk to compute a light curve. It is written in C.
+The source disk is discretized in polar coordinates. The magnification of each image is integrated numerically to compute the total flux at each time step. Results can be validated against transit data using chi squared comparison and Levenberg-Marquardt regression.
 
 TRANSIT
 
@@ -16,7 +19,7 @@ l = limb darkening presence
 Once the parameters are given, the program will compute the hypothetical light curve of the transit from our viewing angle. The result is printed to 
 a data file ending in .dat. 
 
-The file structure is as folllows:
+The file structure is as follows:
 transit.c is the base program without limb darkening
 
 To compile use gcc -lm -o transit transit.c

@@ -1,4 +1,7 @@
 //Program to generate a data file 
+//Creates output file ./generated.dat if it does not exist
+
+
 
 #include <stdio.h>
 #include <string.h>
